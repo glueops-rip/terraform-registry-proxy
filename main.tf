@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source = "localhost:8000/hashicorp/aws"
     }
     # azurerm = {
     #   source = "localhost:8432/hashicorp/azurerm"

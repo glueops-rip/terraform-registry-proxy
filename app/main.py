@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 import requests
-from yaml import load,SafeLoader
-import logging
+import yaml
+import base64
+import os 
+
 
 app = FastAPI()
 
@@ -9,10 +11,13 @@ remote_url = "https://registry.terraform.io"
 remote_source = "registry.terraform.io"
 
 def read_data():
-    f = open("app/provider-versions.yml","r")
-    data = load(f,SafeLoader)
-    f.close()
+    encoded_version_environment = os.environ.get('provider-versions')
+    decoded_version_environment = base64.b64decode(encoded_version_environment)
+    data = yaml.safe_load(decoded_version_environment)
     return data
+
+print(read_data())
+
 
 def is_version_allowed(provider:str,version:str):
     data = read_data()
@@ -36,15 +41,6 @@ def well_known():
     return {"modules.v1": "/v1/modules/", "providers.v1": "/v1/providers/"}
 
 
-@app.get("/v1/providers/{url}/{provider_1}/{provider_2}/index.json")
-def get_providers_json(url:str,provider_1: str, provider_2: str):
-    complete_source_provider = f"{remote_source}/{provider_1}/{provider_2}"
-    res = requests.get(f"{remote_url}/v1/providers/{provider_1}/{provider_2}/versions")
-    d = res.json()
-    parsed_data = parse_versions(complete_source_provider,d)
-    return parsed_data
-
-
 
 @app.get("/v1/providers/{provider_1}/{provider_2}/versions")
 def get_providers_json(provider_1: str, provider_2: str):
@@ -56,7 +52,7 @@ def get_providers_json(provider_1: str, provider_2: str):
 
 
 @app.get("/v1/providers/{provider_1}/{provider_2}/{version}/download/{os_type}/{platform}")
-def get_providers_json(provider_1: str, provider_2: str, version: str,os_type:str, platform: str):
+def download_version(provider_1: str, provider_2: str, version: str,os_type:str, platform: str):
     res = requests.get(
         f"{remote_url}/v1/providers/{provider_1}/{provider_2}/{version}/download/{os_type}/{platform}"
     )
@@ -64,6 +60,5 @@ def get_providers_json(provider_1: str, provider_2: str, version: str,os_type:st
     return d
 
 
-# https://releases.hashicorp.com/terraform-provider-aws/5.0.0/terraform-provider-aws_5.0.0_SHA256SUMS
 
 

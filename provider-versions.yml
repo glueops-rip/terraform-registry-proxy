@@ -1,0 +1,14 @@
+terraform_providers:
+  - source: registry.terraform.io/hashicorp/aws
+    versions:
+      - 4.40.0
+      - 4.67.0
+      - 4.62.0
+
+  - source: registry.terraform.io/hashicorp/azurerm
+    versions:
+      - 3.20.0
+      - 3.0.0
+  - source: registry.terraform.io/cloudflare/cloudflare
+    versions:
+      - 4.6.0
