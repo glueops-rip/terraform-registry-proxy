@@ -10,17 +10,16 @@ app = FastAPI()
 remote_url = "https://registry.terraform.io"
 remote_source = "registry.terraform.io"
 
-def read_data():
+def get_provider_versions():
     encoded_version_environment = os.environ.get('provider-versions')
     decoded_version_environment = base64.b64decode(encoded_version_environment)
     data = yaml.safe_load(decoded_version_environment)
     return data
 
-print(read_data())
 
 
-def is_version_allowed(provider:str,version:str):
-    data = read_data()
+def is_version_allowed(provider:str,version:str,data:dict):
+    
     for item in data['terraform_providers']:
         if item['source'] == provider and version in item['versions']:
             return True
@@ -28,9 +27,10 @@ def is_version_allowed(provider:str,version:str):
 
 def parse_versions(provider,data:dict):
     result_versions = []
+    provider_versions_data = get_provider_versions()
     for version_data in data['versions']:
         version = version_data['version']
-        allow = is_version_allowed(provider,version)
+        allow = is_version_allowed(provider,version,provider_versions_data)
         if allow:
             result_versions.append(version_data)
     data['versions'] = result_versions

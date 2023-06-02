@@ -17,4 +17,8 @@ COPY key.pem /code/key.pem
 
 COPY cert.pem /code/cert.pem
 
+COPY ./static/ /code/static
+
+RUN pytest
+
 CMD ["python" ,"server.py"]

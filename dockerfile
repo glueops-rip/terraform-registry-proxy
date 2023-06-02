@@ -17,5 +17,8 @@ COPY ./app /code/app
 
 COPY server.py server.py
 
+COPY ./static/ /code/static
+
+RUN pytest
 
 CMD ["python" ,"prod_server.py"]
