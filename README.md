@@ -15,13 +15,13 @@ So to enforce the ```terraform init``` to pick a specific version without adding
  - [mkcert](https://github.com/FiloSottile/mkcert)
 
 ### Running The Aerver
-we need TLS certificate as terraform requires the provider url to be https, so we need to create certificate and pass it to the dockerfile 
+we need TLS certificate as terraform requires the provider url to be https, so we need to create certificate and pass it to the Dockerfile 
 
 ``` ./create_tls_certs.sh ```
 
 to build the image:
 
-``` docker build -t image_name -f dockerfile.dev . ```
+``` docker build -t image_name -f Dockerfile.dev . ```
 
 to run the image:
 
