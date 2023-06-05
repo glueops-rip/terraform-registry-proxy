@@ -1,13 +1,13 @@
-FROM python:3.9-slim-buster
+FROM python:3.11-slim-buster
+ENV PYTHONUNBUFFERED=1
 
-RUN apt update -y && apt upgrade -y
-# RUN apt install -y libnss3-tools curl
-
-# RUN curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64" && chmod +x mkcert-v*-linux-amd64 && cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+ARG LOCAL_DEV_MODE=FALSE
 
 WORKDIR /code
 
+COPY ./create_tls_certs.sh /code/create_tls_certs.sh
 
+RUN if [ "$LOCAL_DEV_MODE" = "TRUE" ] ; then ./create_tls_certs.sh ; fi
 
 COPY ./requirements.txt /code/requirements.txt
 
@@ -21,4 +21,4 @@ COPY ./static/ /code/static
 
 RUN pytest
 
-CMD ["python" ,"prod_server.py"]
+CMD ["python" ,"server.py"]
