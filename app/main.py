@@ -11,7 +11,7 @@ remote_url = "https://registry.terraform.io"
 remote_source = "registry.terraform.io"
 
 def get_provider_versions():
-    encoded_version_environment = os.environ.get('provider-versions')
+    encoded_version_environment = os.environ.get('BASE64_ENCODED_PROVIDER_VERSIONS_YAML')
     decoded_version_environment = base64.b64decode(encoded_version_environment)
     data = yaml.safe_load(decoded_version_environment)
     return data
@@ -58,7 +58,3 @@ def download_version(provider_1: str, provider_2: str, version: str,os_type:str,
     )
     d = res.json()
     return d
-
-
-
-

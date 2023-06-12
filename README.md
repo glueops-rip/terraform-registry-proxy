@@ -25,7 +25,7 @@ docker build . --build-arg LOCAL_DEV_MODE=TRUE -t terraform-proxy
 to run the image:
 
 ```bash
-docker run -e LOCAL_DEV_MODE=TRUE -p 8000:8000 --env provider-versions=$(cat provider-versions.yml | base64 -w 0) terraform-proxy
+docker run -e LOCAL_DEV_MODE=TRUE -p 8000:8000 --env BASE64_ENCODED_PROVIDER_VERSIONS_YAML=$(cat provider-versions.yml | base64 -w 0) terraform-proxy
 ```
 
 Get the cert that was created during the docker build for dev mode:
@@ -50,5 +50,5 @@ docker build . -t terraform-proxy
 to run the image:
 
 ```bash
-docker run -e LOCAL_DEV_MODE=FALSE -p 8000:8000 --env provider-versions=$(cat provider-versions.yml | base64 -w 0) terraform-proxy
+docker run -e LOCAL_DEV_MODE=FALSE -p 8000:8000 --env BASE64_ENCODED_PROVIDER_VERSIONS_YAML=$(cat provider-versions.yml | base64 -w 0) terraform-proxy
 ```
