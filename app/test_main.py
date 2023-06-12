@@ -18,7 +18,7 @@ class TestClass(unittest.TestCase):
         with open("static/demo_provider_versions.yml","rb") as f:
             data = f.read()
         encoded = base64.b64encode(data)
-        os.environ['provider-versions'] = encoded.decode("utf-8")
+        os.environ['BASE64_ENCODED_PROVIDER_VERSIONS_YAML'] = encoded.decode("utf-8")
     
     def _get_allowed_versions(self,provider_1:str,provider_2:str):
         with open("static/demo_provider_versions.yml","rb") as f:
